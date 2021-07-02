@@ -1,4 +1,4 @@
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,13 +20,37 @@ namespace FlightAwareDataDownload
 
             if (!SQLdbOpen(myConnection, myCommand)) return;
 
-            for (int i = 0; i < 10000; i++)
+            List<string> AirlinesToDo = new() { "FFT", "JBU", "ANT", "NKS", "AAY" };
+            // Already did AAL, DAL, SWA, UAL, CPA, SIA
+
+            for (int a = 0; a < AirlinesToDo.Count; a++)
             {
-                string FlightNumber = "WN" + i.ToString();
-                string AltFlightNumber = "SWA" + i.ToString();
-                Console.WriteLine("Processing Flight: {0} {1}", FlightNumber, AltFlightNumber);
-                GetFlightInfo(myCommand, AltFlightNumber);
+                for (int i = 1; i < 10000; i++)
+                {
+                    string FlightNumber = AirlinesToDo[a] + i.ToString();
+                    Console.WriteLine("Processing Flight: {0} ", FlightNumber);
+                    GetFlightInfo(myCommand, FlightNumber);
+                }
             }
+
+            myCommand.CommandText = "DELETE FROM flying.flightaware WHERE FlightDate < '20210601';";
+            myCommand.ExecuteNonQuery();
+            myCommand.CommandText = "DELETE FROM flying.flightaware WHERE DepartureCity like 'L+%';";
+            myCommand.ExecuteNonQuery();
+            myCommand.CommandText = "DELETE FROM flying.flightaware WHERE DepartureCity like 'L %';";
+            myCommand.ExecuteNonQuery();
+            myCommand.CommandText = "DELETE FROM flying.flightaware WHERE DepartureCity = 'trac';";
+            myCommand.ExecuteNonQuery();
+            myCommand.CommandText = "DELETE FROM flying.flightaware WHERE DepartureCity = 'live';";
+            myCommand.ExecuteNonQuery();
+            myCommand.CommandText = "DELETE FROM flying.flightaware WHERE ArrivalCity like 'L+%';";
+            myCommand.ExecuteNonQuery();
+            myCommand.CommandText = "DELETE FROM flying.flightaware WHERE ArrivalCity like 'L %';";
+            myCommand.ExecuteNonQuery();
+            myCommand.CommandText = "DELETE FROM flying.flightaware WHERE ArrivalCity = 'trac';";
+            myCommand.ExecuteNonQuery();
+            myCommand.CommandText = "DELETE FROM flying.flightaware WHERE ArrivalCity = 'live';";
+            myCommand.ExecuteNonQuery();
 
             CloseDBandEndProgram(StartTime, myConnection);
             return;
@@ -96,7 +120,7 @@ namespace FlightAwareDataDownload
                             Console.WriteLine("ArrivalCity    : {0}", ArrivalCity);
                             */
 
-                        string AllInfo = FlightNumber + FlightDate + FlightTime + DepartureCity + ArrivalCity;
+            string AllInfo = FlightNumber + FlightDate + FlightTime + DepartureCity + ArrivalCity;
 
                             if (!HistoryList.Contains(AllInfo))
                             {
@@ -219,11 +243,5 @@ namespace FlightAwareDataDownload
             if (Debugger.IsAttached) Console.ReadLine();
             return;
         }
-
-        private static string RemoveQuotes(string v)
-        {
-            return v.Replace('"', ' ').Trim();
-        }
- 
     }
 }
