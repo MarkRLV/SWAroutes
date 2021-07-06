@@ -5350,3 +5350,4 @@ FL #   Days      Route
 9986 ---W--- CYMX(Montréal) CYMX(Montréal)
 9987 -MT---- KATL(Atlanta) KATL(Atlanta)
 9988 -M----- KATL(Atlanta) KATL(Atlanta)
+9999 --T---- KPHX(Phoenix) KLAX(Los Angeles)

@@ -41,7 +41,9 @@ namespace flyingRoutes
             DateTime SearchStart = new(2021, 6, 24);
             DateTime SearchEnd = new(2021, 6, 30);
 
-            List<string> AirlineCodes = new() { "AAL", "DAL", "SWA", "UAL" };
+            List<string> AirlineCodes = new() { "AAL", "DAL", "SWA", "UAL", "CPA",
+                    "FFT", "JBU", "ANT", "NKS", "AAY"};
+
             foreach (string AirlineCode in AirlineCodes)
             {
                 DoAirline(myCommand, AirlineCode, AirportCodes, SearchStart, SearchEnd);
